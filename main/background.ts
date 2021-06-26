@@ -1,4 +1,4 @@
-import { app } from 'electron';
+import { app, ipcMain } from 'electron';
 import serve from 'electron-serve';
 import { createWindow } from './helpers';
 import { autoUpdater } from "electron-updater"
@@ -11,6 +11,7 @@ if (isProd) {
   app.setPath('userData', `${app.getPath('userData')} (development)`);
 }
 
+let mainWindow
 (async () => {
   await app.whenReady();
 
@@ -31,10 +32,20 @@ if (isProd) {
 app.on('window-all-closed', () => {
   app.quit();
 });
-app.on('ready', ()=>{
-  autoUpdater.checkForUpdates();
 
-  autoUpdater.addListener('update-downloaded', (info) => {
-    autoUpdater.quitAndInstall();
-  });
-})
+
+ipcMain.on('app_version', (event) => {
+  event.sender.send('app_version', { version: app.getVersion() });
+});
+
+autoUpdater.on('update-available', () => {
+  mainWindow.webContents.send('update_available');
+});
+
+autoUpdater.on('update-downloaded', () => {
+  mainWindow.webContents.send('update_downloaded');
+});
+
+ipcMain.on('restart_app', () => {
+  autoUpdater.quitAndInstall();
+});

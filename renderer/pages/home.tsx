@@ -9,7 +9,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import Typography from '@material-ui/core/Typography';
 import Link from '../components/Link';
-
+import {ipcRenderer} from 'electron'
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
@@ -20,10 +20,20 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 function Home() {
+
+React.useEffect(()=>{
+ipcRenderer.on('update_available', (ev, data)=>{
+  console.log(data)
+})
+}, [])  
   const classes = useStyles({});
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
   const handleClick = () => setOpen(true);
+
+  const update = ()=>{
+   console.log(ipcRenderer.sendSync('pdate-available')) 
+  }
 
   return (
     <React.Fragment>
@@ -46,7 +56,7 @@ function Home() {
           Material-UI
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
-          with Nextron
+         Com Felipe
         </Typography>
         <img src="/images/logo.png" />
         <Typography gutterBottom>

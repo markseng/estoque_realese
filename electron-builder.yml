@@ -14,6 +14,6 @@ publish:
   provider: github
   owner: markseng
   repo: estoque_realese
-  token: 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
+  token: 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
   publishAutoUpdate: true
 
