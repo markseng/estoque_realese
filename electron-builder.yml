@@ -1,0 +1,19 @@
+appId: markseng@resute
+productName: Apontamento de Produção
+copyright: Copyright © 2021 Felipe Marques
+directories:
+  output: dist
+  buildResources: resources
+files:
+  - from: .
+    filter:
+      - package.json
+      - app
+      - resources
+publish: 
+  provider: github
+  owner: markseng
+  repo: estoque_realese
+  token: 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
+  publishAutoUpdate: true
+
